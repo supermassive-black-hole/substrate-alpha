@@ -1,0 +1,1 @@
+47 2 * * 7 root /app/certbot-renew.sh
