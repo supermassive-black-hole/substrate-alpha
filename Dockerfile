@@ -1,20 +1,18 @@
-FROM openjdk:8u141-jre-slim
+FROM debian:stretch-slim
 
-ADD run.sh /app/run.sh
+ENV PATH=/opt/conda/bin:$PATH
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends nginx supervisor python-pip libyaml-0-2 libyaml-dev python-dev cron python-certbot \
- && echo "deb http://packages.dotdeb.org jessie all" >>/etc/apt/sources.list \
- && echo "deb-src http://packages.dotdeb.org jessie all" >>/etc/apt/sources.list \
- && pip install awscli \
- && rm -rf /var/lib/apt/lists/* /tmp/* \
- && rm /etc/nginx/sites-enabled/default \
- && apt-get remove -y libyaml-dev python-dev \
+RUN mkdir -p /usr/share/man/man1/ \
+ && apt-get update --fix-missing \
+ && apt-get install -y build-essential ca-certificates bzip2 wget openjdk-8-jre-headless nginx procps \
+ && apt-get install --no-install-recommends -y cron \
+ && echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
+ && wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.14-Linux-x86_64.sh -O ~/miniconda.sh \
+ && /bin/bash ~/miniconda.sh -b -p /opt/conda \
+ && rm ~/miniconda.sh \
+ && PATH=/opt/conda/bin:$PATH pip install circus certbot aws \
+ && apt-get remove -y build-essential bzip2 wget \
  && apt-get autoremove -y \
- && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-ADD certbot-cron /etc/cron.d/certbot-cron
-ADD nginx.conf /etc/nginx/nginx.conf
-ADD supervisord.conf /etc/supervisord.conf
-
-CMD ["/app/run.sh"]
+ && rm /etc/nginx/sites-enabled/default \
+ && rm -rf /var/lib/apt/lists/* \
+ && rm -fr /tmp/*
