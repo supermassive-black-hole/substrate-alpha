@@ -1,2 +1,2 @@
 # substrate-alpha
-An nginx/openjdk/letsencrypt/aws combo
+An nginx/openjdk/letsencrypt/miniconda combo
