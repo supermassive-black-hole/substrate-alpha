@@ -1,6 +1,7 @@
 FROM debian:stretch-slim
 
 ENV PATH=/opt/conda/bin:$PATH
+ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:MaxRAMFraction=1 ${SUBSTRATE_JAVA_OPTS}"
 
 RUN mkdir -p /usr/share/man/man1/ \
  && apt-get update --fix-missing \
