@@ -11,7 +11,7 @@ RUN mkdir -p /usr/share/man/man1/ \
  && wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.14-Linux-x86_64.sh -O ~/miniconda.sh \
  && /bin/bash ~/miniconda.sh -b -p /opt/conda \
  && rm ~/miniconda.sh \
- && PATH=/opt/conda/bin:$PATH pip install circus certbot \
+ && PATH=/opt/conda/bin:$PATH pip install circus certbot awscli certbot-route53 \
  && apt-get remove -y build-essential bzip2 wget \
  && apt-get autoremove -y \
  && rm /etc/nginx/sites-enabled/default \
